@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# HTTPS yönlendirmesi (isteğe bağlı ama önerilir)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Sonundaki .html uzantısını gizle
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [NC,L]
+
+# URL'ye elle .html yazılırsa direkt uzantısız hâline yönlendir (301)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\s/([^\s]+)\.html\s [NC]
+RewriteRule ^ %1 [R=301,L]
